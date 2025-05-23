@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useFetch from "../hooks/useFetch";
 
-import { Input, Button, Flex, Table } from "antd";
+import { Input, Button, Flex, Table, Result } from "antd";
 
 function List({ setItem, setIsList }) {
   const [searchValue, setSearchValue] = useState("");
@@ -61,7 +61,26 @@ function List({ setItem, setIsList }) {
         </Flex>
       </div>
       <div style={{ width: "100%", height: "800px", paddingTop: "20px" }}>
-        <Table pagination={false} dataSource={data?.items} columns={columns} />
+        {error ? (
+          <Result
+            status="error"
+            title="加载失败"
+            subTitle="请检查网络或稍后重试"
+            extra={[
+              <Button type="primary" onClick={getData}>
+                重试
+              </Button>,
+            ]}
+          />
+        ) : (
+          <Table
+            loading={loading}
+            error
+            pagination={false}
+            dataSource={data?.items}
+            columns={columns}
+          />
+        )}
       </div>
     </>
   );
